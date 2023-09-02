@@ -801,11 +801,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fafc5d1fe62be4448a42522aece080a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fogDensity: 1.24
-  fogStart: 0.01
-  fogEnd: 2
-  fogColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
+  FogDensity: 1.3
+  FogStart: 0
+  FogEnd: 1.35
+  FogColor: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 1}
   FogShader: {fileID: 4800000, guid: 44f8a704a2f935344b0e5f712ecede2a, type: 3}
+  NoiseTexture: {fileID: 2800000, guid: 81df4cfe33d7fe849bc014adbefdbd6f, type: 3}
+  FogXSpeed: -0.1
+  FogZSpeed: 0.05
+  NoiseAmount: 1.2
 --- !u!1 &1522259642
 GameObject:
   m_ObjectHideFlags: 0

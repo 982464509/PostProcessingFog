@@ -8,17 +8,18 @@ using UnityEngine;
 public class PostProFog : MonoBehaviour
 {
 	[Range(0.0f, 3.0f)]
-	[Header("雾的浓度")]
-	public float fogDensity = 1.0f;
-	[Header("雾的起始高度")]
-	public float fogStart = 0.0f;
-	[Header("雾的终止高度")]
-	public float fogEnd = 2.0f;
-	[Header("雾的颜色")]
-	public Color fogColor = new Color(130 / 255f, 130 / 255f, 130 / 255f, 1.0f);
-	[Header("雾的后处理Shader")]
-	public Shader FogShader;	
-
+	[Header("雾的浓度")] public float FogDensity = 1.0f;
+	[Header("雾的起始高度")] public float FogStart = 0.0f;
+	[Header("雾的终止高度")] public float FogEnd = 2.0f;
+	[Header("雾的颜色")] public Color FogColor = new Color(130 / 255f, 130 / 255f, 130 / 255f, 1.0f);
+	[Header("雾的后处理Shader")] public Shader FogShader;
+	[Header("雾的噪声图")] public Texture NoiseTexture;
+	[Range(-0.5f, 0.5f)]
+	[Header("雾X方向流动速度")] public float FogXSpeed = 0.05f;
+	[Range(-0.5f, 0.5f)]
+	[Header("雾Z方向流动速度")] public float FogZSpeed = 0.05f;
+	[Range(0.0f, 3.0f)]
+	[Header("雾噪声图参数")] public float NoiseAmount = 1.0f;
 
 	private Camera mCurrentCamera;
 	public Camera CurrentCamera
@@ -61,7 +62,7 @@ public class PostProFog : MonoBehaviour
 
 	void OnEnable()
 	{
-		GetComponent<Camera>().depthTextureMode |= DepthTextureMode.Depth;
+		CurrentCamera.depthTextureMode |= DepthTextureMode.Depth;
 	}
 
 	void OnRenderImage(RenderTexture src, RenderTexture dest)
@@ -106,10 +107,14 @@ public class PostProFog : MonoBehaviour
 		frustumCorners.SetRow(3, topLeft);
 
 		FogMaterial.SetMatrix("_FrustumCornersRay", frustumCorners);
-		FogMaterial.SetFloat("_FogDensity", fogDensity);
-		FogMaterial.SetColor("_FogColor", fogColor);
-		FogMaterial.SetFloat("_FogStart", fogStart);
-		FogMaterial.SetFloat("_FogEnd", fogEnd);
+		FogMaterial.SetFloat("_FogDensity", FogDensity);
+		FogMaterial.SetColor("_FogColor", FogColor);
+		FogMaterial.SetFloat("_FogStart", FogStart);
+		FogMaterial.SetFloat("_FogEnd", FogEnd);
+		FogMaterial.SetTexture("_NoiseTex", NoiseTexture);
+		FogMaterial.SetFloat("_FogXSpeed", FogXSpeed);
+		FogMaterial.SetFloat("_FogZSpeed", FogZSpeed);
+		FogMaterial.SetFloat("_NoiseAmount", NoiseAmount);
 
 		Graphics.Blit(src, dest, FogMaterial);
 	}
