@@ -19,6 +19,8 @@ public class PostProFog : MonoBehaviour
 	[Range(-0.5f, 0.5f)]
 	[Header("雾Z方向流动速度")] public float FogZSpeed = 0.05f;
 	[Range(0.0f, 3.0f)]
+	[Header("雾噪声图权重")] public float NoiseWeight = 1.0f;
+	[Range(0.0f, 20.0f)]
 	[Header("雾噪声图参数")] public float NoiseAmount = 1.0f;
 
 	private Camera mCurrentCamera;
@@ -114,9 +116,10 @@ public class PostProFog : MonoBehaviour
 		FogMaterial.SetTexture("_NoiseTex", NoiseTexture);
 		FogMaterial.SetFloat("_FogXSpeed", FogXSpeed);
 		FogMaterial.SetFloat("_FogZSpeed", FogZSpeed);
-		FogMaterial.SetFloat("_NoiseAmount", NoiseAmount);
+		FogMaterial.SetFloat("_NoiseWeight", NoiseWeight);
+        FogMaterial.SetFloat("_NoiseAmount", NoiseAmount);
 
-		Graphics.Blit(src, dest, FogMaterial);
+        Graphics.Blit(src, dest, FogMaterial);
 	}
 
 	private Material CreateMaterial(Shader shader)

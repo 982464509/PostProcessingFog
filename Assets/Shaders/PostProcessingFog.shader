@@ -28,6 +28,7 @@
 			sampler2D _NoiseTex;
 			half _FogXSpeed;
 			half _FogYSpeed;
+			half _NoiseWeight;
 			half _NoiseAmount;
 
 			struct v2f 
@@ -73,9 +74,10 @@
 			{
 				float linearDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv_depth));
 				float3 worldPos = _WorldSpaceCameraPos + linearDepth * i.interpolatedRay.xyz;
-							
+
 				float2 speed = _Time.y * float2(_FogXSpeed, _FogYSpeed);
-				float noise = (tex2D(_NoiseTex, i.uv + speed).r - 0.5) * _NoiseAmount;
+				
+				float noise = (tex2D(_NoiseTex, worldPos.xz / _NoiseAmount + speed).r - 0.5) * _NoiseWeight;
 							
 				float fogDensity = (_FogEnd - worldPos.y) / (_FogEnd - _FogStart); 
 				fogDensity = saturate(fogDensity * _FogDensity * (1 + noise));
